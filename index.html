@@ -85,7 +85,7 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
                 Distribution of stickers across take-out locations
             </div>
     </div>
-    <iframe src="./sticker-distribution/sticker-distribution.html" id="my-iframe" scrolling="no"></iframe>
+    <iframe src="./sticker-distribution/sticker-distribution.html" id="my-iframe" scrolling="no" style="min-height: 170px;"></iframe>
     <div class="writing">
         I know the data’s a bit off; some take-out orders are sticker-less, like acai bowls from Bruin Cafe or gelato from Cafe 1919. Still, I’d say the sticker distribution reflects my overall preferences. For example, fewer visits to Cafe 1919 make sense, given how rich the paninis are. I received a duplicate panini sticker once, so the total visit count is actually one less:
     </div>
@@ -113,22 +113,41 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
       const targetBox = innerDoc.getElementById("figma2html-box");
       
       if (targetBox) {
-        // Create an observer inside the parent to watch the box size changes
+        // Core function to update the height safely
+        function updateHeight() {
+          const currentHeight = targetBox.offsetHeight;
+          if (currentHeight > 0) {
+            iframe.style.minHeight = "0px"; // Remove the fallback once we have a real value
+            iframe.style.height = (currentHeight + 5) + "px";
+          }
+        }
+
+        // 1. Create the observer for future browser resizes and layout updates
         const observer = new iframe.contentWindow.ResizeObserver(entries => {
           for (let entry of entries) {
-            // Update iframe height instantly when the container changes size
-            iframe.style.height = entry.target.offsetHeight + 5 + "px";
+            updateHeight();
           }
         });
-
-        // Start watching the figma2html-box element
         observer.observe(targetBox);
+
+        // 2. Run immediately to catch it if it's already there
+        updateHeight();
+
+        // 3. Safety Fallback: Run again 150ms later to catch late-rendering Figma assets / images
+        setTimeout(updateHeight, 150);
+        
+        // 4. Ultimate Safety Fallback: Run when all assets (like un-cached images) finish loading
+        iframe.contentWindow.addEventListener("load", updateHeight);
       }
     } catch (e) {
       console.error("Cannot access iframe content. Ensure it's on the same domain.", e);
     }
   }
 
-  // Trigger setup as soon as the iframe window is available
-  iframe.addEventListener("load", setupIframeObserver);
+  // Handle case where iframe might have cached and loaded before this script evaluated
+  if (iframe.contentWindow && iframe.contentWindow.document.readyState === "complete") {
+    setupIframeObserver();
+  } else {
+    iframe.addEventListener("load", setupIframeObserver);
+  }
 </script>
