@@ -7,6 +7,10 @@
     font-smooth: never; 
 }
 
+body {
+    margin: 15px;
+}
+
 .title, .title div {
     font-family: 'Source Serif 4';
     font-size: 3rem;
@@ -17,6 +21,16 @@
     font-size: 4.9rem;
     margin-bottom: -0.8rem;
     margin-top: -0.8rem;
+}
+
+@media (max-width: 670px) {
+    #title1 {
+        font-size: 3.5rem;
+    }
+    .title {
+        font-size: 2.1rem;
+    }
+
 }
 
 .bodytext {
@@ -38,12 +52,52 @@ a {
 .writing {
     font-size: 1.4rem;
     max-width: 530px;
-    margin: 0 auto;
-    margin-top: 50px;
+    margin: 50px auto;
 }
 
 .image-dropcap {
   float: left;
   width: 3.5rem;
   margin-right: 5px;
+}
+
+.VizText {
+    text-align: center;
+    display: inline;
+}
+
+.VizTitle {
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.VizSubtitle {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.graphic_image {
+    max-width: 530px;
+    display: block;
+    margin: 0 auto;
+}
+
+#dining_stickers_image {
+    width: 650px;
+    max-width: 100%;
+}
+
+#sticker_placement_image {
+    width: 530px;
+    max-width: 100%;
+}
+
+#dining_stickers_caption {
+    display: flex;
+    max-width: 650px;
+    justify-content: space-around;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0 auto;
 }
