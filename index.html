@@ -113,19 +113,21 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
       const targetBox = innerDoc.getElementById("figma2html-box");
       
       if (targetBox) {
-        // Core function to update the height safely
         function updateHeight() {
-          // Fix for Safari: Clear strict heights so Safari is forced to re-read the true DOM height
+          // Clear fixed height and force WebKit to execute a structural layout update pass
           iframe.style.height = "auto"; 
           
-          const currentHeight = targetBox.offsetHeight;
-          if (currentHeight > 0) {
-            iframe.style.minHeight = "0px"; // Remove the fallback once we have a real value
-            iframe.style.height = (currentHeight + 15) + "px";
+          // Use getBoundingClientRect to calculate the precise mobile layout decimal bounds
+          const rectHeight = targetBox.getBoundingClientRect().height;
+          
+          if (rectHeight > 0) {
+            iframe.style.minHeight = "0px";
+            // Add a clean pixel safety pad to secure wrapped font spacing thresholds
+            iframe.style.height = (Math.ceil(rectHeight) + 15) + "px";
           }
         }
 
-        // 1. Create the observer for future browser resizes and layout updates
+        // 1. Hook up the reactive listener
         const observer = new iframe.contentWindow.ResizeObserver(entries => {
           for (let entry of entries) {
             updateHeight();
@@ -133,13 +135,11 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
         });
         observer.observe(targetBox);
 
-        // 2. Run immediately to catch it if it's already there
+        // 2. Multi-stage structural calculation loop
         updateHeight();
-
-        // 3. Safety Fallback: Run again 150ms later to break Safari's rigid layout loop
         setTimeout(updateHeight, 150);
+        setTimeout(updateHeight, 400);
         
-        // 4. Ultimate Safety Fallback: Run when all assets finish loading
         iframe.contentWindow.addEventListener("load", updateHeight);
       }
     } catch (e) {
@@ -147,7 +147,6 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
     }
   }
 
-  // Handle case where iframe might have cached and loaded before this script evaluated
   if (iframe.contentWindow && iframe.contentWindow.document.readyState === "complete") {
     setupIframeObserver();
   } else {
