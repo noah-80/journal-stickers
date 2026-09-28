@@ -104,6 +104,8 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
 </body>
 </html>
 
+<iframe src="page.html" id="my-iframe" style="width: 100%; min-width: 100%; min-height: 170px; border: none; display: block;" scrolling="no"></iframe>
+
 <script>
   const iframe = document.getElementById("my-iframe");
 
@@ -114,20 +116,21 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
       
       if (targetBox) {
         function updateHeight() {
-          // Clear fixed height and force WebKit to execute a structural layout update pass
-          iframe.style.height = "auto"; 
+          // 1. WebKit Fix: Temporarily break the 170px rendering trap by extending 
+          // the iframe downwards. This gives text infinite room to unwrap naturally.
+          iframe.style.height = "10000px"; 
           
-          // Use getBoundingClientRect to calculate the precise mobile layout decimal bounds
-          const rectHeight = targetBox.getBoundingClientRect().height;
+          // 2. Extract scrollHeight from the target container (captures overflow boundaries)
+          const trueHeight = targetBox.scrollHeight;
           
-          if (rectHeight > 0) {
+          if (trueHeight > 0) {
             iframe.style.minHeight = "0px";
-            // Add a clean pixel safety pad to secure wrapped font spacing thresholds
-            iframe.style.height = (Math.ceil(rectHeight) + 15) + "px";
+            // 3. Immediately apply the perfect size plus padding for font rounding differences
+            iframe.style.height = (trueHeight + 15) + "px";
           }
         }
 
-        // 1. Hook up the reactive listener
+        // Create the observer to watch layout/text shifts inside the figma box
         const observer = new iframe.contentWindow.ResizeObserver(entries => {
           for (let entry of entries) {
             updateHeight();
@@ -135,10 +138,10 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
         });
         observer.observe(targetBox);
 
-        // 2. Multi-stage structural calculation loop
+        // Execute calculation lifecycle across initial paint intervals
         updateHeight();
-        setTimeout(updateHeight, 150);
-        setTimeout(updateHeight, 400);
+        setTimeout(updateHeight, 100);
+        setTimeout(updateHeight, 400); // Catches delayed mobile CPU asset rendering
         
         iframe.contentWindow.addEventListener("load", updateHeight);
       }
