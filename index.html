@@ -117,7 +117,7 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
         const observer = new iframe.contentWindow.ResizeObserver(entries => {
           for (let entry of entries) {
             // Update iframe height instantly when the container changes size
-            iframe.style.height = entry.target.offsetHeight + "px";
+            iframe.style.height = entry.target.offsetHeight + 5 + "px";
           }
         });
 
