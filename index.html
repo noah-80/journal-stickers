@@ -107,23 +107,28 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
 <script>
   const iframe = document.getElementById("my-iframe");
 
-  function resizeIframe() {
+  function setupIframeObserver() {
     try {
       const innerDoc = iframe.contentWindow.document;
       const targetBox = innerDoc.getElementById("figma2html-box");
       
       if (targetBox) {
-        // Set height based on the specific element's offsetHeight
-        iframe.style.height = targetBox.offsetHeight + "px";
+        // Create an observer inside the parent to watch the box size changes
+        const observer = new iframe.contentWindow.ResizeObserver(entries => {
+          for (let entry of entries) {
+            // Update iframe height instantly when the container changes size
+            iframe.style.height = entry.target.offsetHeight + "px";
+          }
+        });
+
+        // Start watching the figma2html-box element
+        observer.observe(targetBox);
       }
     } catch (e) {
-      console.error("Cannot access iframe content due to cross-domain restrictions.");
+      console.error("Cannot access iframe content. Ensure it's on the same domain.", e);
     }
   }
 
-  // Resize when iframe first loads
-  iframe.addEventListener("load", resizeIframe);
-
-  // Resize whenever the parent window changes size
-  window.addEventListener("resize", resizeIframe);
+  // Trigger setup as soon as the iframe window is available
+  iframe.addEventListener("load", setupIframeObserver);
 </script>
