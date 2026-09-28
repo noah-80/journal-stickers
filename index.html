@@ -104,8 +104,6 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
 </body>
 </html>
 
-<iframe src="page.html" id="my-iframe" style="width: 100%; min-width: 100%; min-height: 170px; border: none; display: block;" scrolling="no"></iframe>
-
 <script>
   const iframe = document.getElementById("my-iframe");
 
@@ -126,7 +124,7 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
           if (trueHeight > 0) {
             iframe.style.minHeight = "0px";
             // 3. Immediately apply the perfect size plus padding for font rounding differences
-            iframe.style.height = (trueHeight + 15) + "px";
+            iframe.style.height = (trueHeight + 30) + "px";
           }
         }
 
