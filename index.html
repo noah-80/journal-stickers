@@ -85,7 +85,7 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
                 Distribution of stickers across take-out locations
             </div>
     </div>
-    <iframe src="./sticker-distribution/sticker-distribution.html" scrolling="no" onload="adjustHeight(this)"></iframe>
+    <iframe src="./sticker-distribution/sticker-distribution.html" id="my-iframe" scrolling="no"></iframe>
     <div class="writing">
         I know the data’s a bit off; some take-out orders are sticker-less, like acai bowls from Bruin Cafe or gelato from Cafe 1919. Still, I’d say the sticker distribution reflects my overall preferences. For example, fewer visits to Cafe 1919 make sense, given how rich the paninis are. I received a duplicate panini sticker once, so the total visit count is actually one less:
     </div>
@@ -105,7 +105,25 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
 </html>
 
 <script>
-function adjustHeight(iframe) {
-  iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
-}
+  const iframe = document.getElementById("my-iframe");
+
+  function resizeIframe() {
+    try {
+      const innerDoc = iframe.contentWindow.document;
+      const targetBox = innerDoc.getElementById("figma2html-box");
+      
+      if (targetBox) {
+        // Set height based on the specific element's offsetHeight
+        iframe.style.height = targetBox.offsetHeight + "px";
+      }
+    } catch (e) {
+      console.error("Cannot access iframe content due to cross-domain restrictions.");
+    }
+  }
+
+  // Resize when iframe first loads
+  iframe.addEventListener("load", resizeIframe);
+
+  // Resize whenever the parent window changes size
+  window.addEventListener("resize", resizeIframe);
 </script>
