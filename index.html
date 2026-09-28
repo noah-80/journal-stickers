@@ -115,10 +115,13 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
       if (targetBox) {
         // Core function to update the height safely
         function updateHeight() {
+          // Fix for Safari: Clear strict heights so Safari is forced to re-read the true DOM height
+          iframe.style.height = "auto"; 
+          
           const currentHeight = targetBox.offsetHeight;
           if (currentHeight > 0) {
             iframe.style.minHeight = "0px"; // Remove the fallback once we have a real value
-            iframe.style.height = (currentHeight + 5) + "px";
+            iframe.style.height = (currentHeight + 15) + "px";
           }
         }
 
@@ -133,10 +136,10 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
         // 2. Run immediately to catch it if it's already there
         updateHeight();
 
-        // 3. Safety Fallback: Run again 150ms later to catch late-rendering Figma assets / images
+        // 3. Safety Fallback: Run again 150ms later to break Safari's rigid layout loop
         setTimeout(updateHeight, 150);
         
-        // 4. Ultimate Safety Fallback: Run when all assets (like un-cached images) finish loading
+        // 4. Ultimate Safety Fallback: Run when all assets finish loading
         iframe.contentWindow.addEventListener("load", updateHeight);
       }
     } catch (e) {
