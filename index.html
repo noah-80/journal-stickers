@@ -85,6 +85,7 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
                 Distribution of stickers across take-out locations
             </div>
     </div>
+    <iframe src="./sticker-distribution/sticker-distribution.html" scrolling="no" onload="adjustHeight(this)"></iframe>
     <div class="writing">
         I know the data’s a bit off; some take-out orders are sticker-less, like acai bowls from Bruin Cafe or gelato from Cafe 1919. Still, I’d say the sticker distribution reflects my overall preferences. For example, fewer visits to Cafe 1919 make sense, given how rich the paninis are. I received a duplicate panini sticker once, so the total visit count is actually one less:
     </div>
@@ -102,3 +103,9 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
     </div>
 </body>
 </html>
+
+<script>
+function adjustHeight(iframe) {
+  iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+}
+</script>
