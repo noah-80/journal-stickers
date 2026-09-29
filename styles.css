@@ -139,11 +139,11 @@ a {
   position: relative;
 }
 
-.list li{
+li{
   margin: 50px;
 }
 
-.content ul {
+.content ul li {
   font-size: 30px;
   color: #C8C6C6;
   margin: 0;
