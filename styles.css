@@ -208,3 +208,43 @@ ul {
     max-width: 400px;
 }
 }
+
+    #timeline-intro {
+        margin-bottom: 0px;
+    }
+    #timeline-end {
+        margin-top: 0px;
+    }
+
+    .mobile-timeline {
+        display: none;
+    }
+
+@media screen and (max-width: 870px) {
+    .pin-section {
+        display: none;
+    }
+    #timeline-intro {
+        margin-bottom: 20px;
+    }
+    #timeline-end {
+        margin-top: 50px;
+    }
+    .mobile-timeline {
+        display:block;
+        margin-bottom: 1.4rem;
+        margin-top: 1.4rem;
+    }
+
+    #timeline-end {
+        margin-top: 1.4rem;
+    }
+
+    .listdate {
+        color:#363636;
+    }
+
+    .scrollpic {
+        max-width: 100%;
+    }
+}
