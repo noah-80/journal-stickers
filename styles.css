@@ -150,6 +150,10 @@ a {
   flex-grow: 0;
 }
 
+.listdate {
+    color:#C8C6C6;
+}
+
 .content .fill {
   position: absolute;
   top: 0;
@@ -189,6 +193,6 @@ ul {
 }
 
 .listdate {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.8rem;
 }
