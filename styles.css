@@ -137,6 +137,7 @@ a {
   display: flex;
   padding: 0 10px;
   position: relative;
+  gap: 2rem;
 }
 
 .content ul li {
@@ -159,9 +160,8 @@ a {
 }
 
 .content .right {
-  flex-grow: 1;
   position: relative;
-  min-width: 40%;
+  max-width: 40%;
 }
 
 .right .slide {
@@ -176,9 +176,19 @@ a {
 
 .scrollpic {
   height: 100%;
-  max-width: 300px;
+  max-width: 500px;
 }
 
 .list {
     max-width: 40%;
+    margin-left: 6rem;
+}
+
+ul {
+    padding-inline-start: 0;
+}
+
+.listdate {
+    font-weight: 500;
+    font-size: 0.8rem;
 }
