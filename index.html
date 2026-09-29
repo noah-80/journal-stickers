@@ -85,11 +85,10 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
                 Distribution of stickers across take-out locations
             </div>
     </div>
-    <iframe src="./sticker-distribution/sticker-distribution.html" id="my-iframe" scrolling="no" style="min-height: 180px;"></iframe>
+    <img class="graphic_image" style="width: 700px;" src="graphics/Distribution.webp">
     <div class="writing">
         I know the data’s a bit off; some take-out orders are sticker-less, like acai bowls from Bruin Cafe or gelato from Cafe 1919. Still, I’d say the sticker distribution reflects my overall preferences. For example, fewer visits to Cafe 1919 make sense, given how rich the paninis are. I received a duplicate panini sticker once, so the total visit count is actually one less:
     </div>
-    <img class="graphic_image img_border" src="graphics/JournalScan.webp">
     <div class="writing">
         Beyond preferences between dining locations, a location’s stickers over time reflect other choices in my dining history.
     </div>
@@ -103,54 +102,3 @@ I’d say my take-out choices mostly came down to personal preference. I know wh
     </div>
 </body>
 </html>
-
-<script>
-  const iframe = document.getElementById("my-iframe");
-
-  function setupIframeObserver() {
-    try {
-      const innerDoc = iframe.contentWindow.document;
-      const targetBox = innerDoc.getElementById("figma2html-box");
-      
-      if (targetBox) {
-        function updateHeight() {
-          // 1. WebKit Fix: Temporarily break the 170px rendering trap by extending 
-          // the iframe downwards. This gives text infinite room to unwrap naturally.
-          iframe.style.height = "10000px"; 
-          
-          // 2. Extract scrollHeight from the target container (captures overflow boundaries)
-          const trueHeight = targetBox.scrollHeight;
-          
-          if (trueHeight > 0) {
-            iframe.style.minHeight = "0px";
-            // 3. Immediately apply the perfect size plus padding for font rounding differences
-            iframe.style.height = (trueHeight + 30) + "px";
-          }
-        }
-
-        // Create the observer to watch layout/text shifts inside the figma box
-        const observer = new iframe.contentWindow.ResizeObserver(entries => {
-          for (let entry of entries) {
-            updateHeight();
-          }
-        });
-        observer.observe(targetBox);
-
-        // Execute calculation lifecycle across initial paint intervals
-        updateHeight();
-        setTimeout(updateHeight, 100);
-        setTimeout(updateHeight, 400); // Catches delayed mobile CPU asset rendering
-        
-        iframe.contentWindow.addEventListener("load", updateHeight);
-      }
-    } catch (e) {
-      console.error("Cannot access iframe content. Ensure it's on the same domain.", e);
-    }
-  }
-
-  if (iframe.contentWindow && iframe.contentWindow.document.readyState === "complete") {
-    setupIframeObserver();
-  } else {
-    iframe.addEventListener("load", setupIframeObserver);
-  }
-</script>
